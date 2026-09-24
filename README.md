@@ -1,5 +1,7 @@
 # AAST Schedule Planner
 
+[![CI](https://github.com/ghatwary06/aast-scheduler/actions/workflows/ci.yml/badge.svg)](https://github.com/ghatwary06/aast-scheduler/actions/workflows/ci.yml)
+
 **Find every clash-free university timetable that fits your life, in milliseconds.**
 
 A Brave/Chrome extension for AASTMT students. You tell it what you want ("Fridays and Sundays off, no gaps, nothing after 7-8, stay in my friend's OOP group"), and it searches every combination of course groups. It ranks the schedules that fit and shows them as colour-coded timetables you can export to PDF.
