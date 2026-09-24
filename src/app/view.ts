@@ -37,7 +37,8 @@ export function renderTimetable(ds: Dataset, sessions: Placed[]): HTMLTableEleme
   const last = Math.max(10, ...sessions.map((p) => p.session.to));
   const width = last % 2 ? last + 1 : last;
   const table = h('table', { class: 'tt' });
-  const head = h('tr', {}, h('th', {}));
+  // table-layout: fixed sizes columns from the first row, so the header's corner cell carries the day-column width
+  const head = h('tr', {}, h('th', { class: 'day' }));
   for (let p = 1; p <= width; p += 2) head.append(h('th', { colspan: 2 }, `${p}-${p + 1}`));
   table.append(head);
 

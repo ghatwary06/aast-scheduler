@@ -57,6 +57,7 @@ button:disabled { opacity: 0.5; cursor: default; }
 .tt th, .tt td { border: 1px solid var(--line); height: 30px; text-align: center; padding: 0 2px; line-height: 1.15; overflow: hidden; }
 .tt th { background: #eef0f3; font-weight: 600; }
 .tt th.day { width: 82px; }
+.group .tt th.day { width: 70px; font-size: 10px; }
 .tt td.off { color: #999; background: #f4f4f4; }
 .tt td.gap { background: #f6d3cf; }
 .picks { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 4px 8px; font-size: 12px; }
