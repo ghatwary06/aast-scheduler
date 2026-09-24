@@ -1,0 +1,418 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+<html >
+<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><meta name="viewport" content="width=device-width" /><title>
+	Main Menu
+</title>
+
+    <script src="js/jquery-1.REDACTED.min.js" type="text/javascript"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    
+    
+  <script src="js/thickbox.js" type="text/javascript"></script> 
+    <script src="js/thickbox-compressed.js" type="text/javascript"></script>
+     <link href="css/registration.css" rel="stylesheet" type="text/css" /><link href="css/tables.css" rel="stylesheet" type="text/css" /><link href="css/buttons.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" type="text/css" href="css/styles.css" /><link href="css/page.css" rel="stylesheet" type="text/css" /><link href="css/thickbox.css" rel="stylesheet" type="text/css" />
+       <script type="text/javascript">
+<!--
+           function MM_swapImgRestore() { //v3.0
+               var i, x, a = document.MM_sr; for (i = 0; a && i < a.length && (x = a[i]) && x.oSrc; i++) x.src = x.oSrc;
+           }
+           function MM_preloadImages() { //v3.0
+               var d = document; if (d.images) {
+                   if (!d.MM_p) d.MM_p = new Array();
+                   var i, j = d.MM_p.length, a = MM_preloadImages.arguments; for (i = 0; i < a.length; i++)
+                       if (a[i].indexOf("#") != 0) { d.MM_p[j] = new Image; d.MM_p[j++].src = a[i]; } 
+               }
+           }
+
+           function MM_findObj(n, d) { //v4.01
+               var p, i, x; if (!d) d = document; if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+                   d = parent.frames[n.substring(p + 1)].document; n = n.substring(0, p);
+               }
+               if (!(x = d[n]) && d.all) x = d.all[n]; for (i = 0; !x && i < d.forms.length; i++) x = d.forms[i][n];
+               for (i = 0; !x && d.layers && i < d.layers.length; i++) x = MM_findObj(n, d.layers[i].document);
+               if (!x && d.getElementById) x = d.getElementById(n); return x;
+           }
+
+           function MM_swapImage() { //v3.0
+               var i, j = 0, x, a = MM_swapImage.arguments; document.MM_sr = new Array; for (i = 0; i < (a.length - 2); i += 3)
+                   if ((x = MM_findObj(a[i])) != null) { document.MM_sr[j++] = x; if (!x.oSrc) x.oSrc = x.src; x.src = a[i + 2]; }
+           }
+//-->
+</script>
+ <script type="text/javascript" language="javascript">
+    var previousRowindex = -1;
+    var previousClass;
+    var win; 
+ 
+
+
+function disableBackButton()
+{
+window.history.forward()
+}
+disableBackButton();
+window.onpageshow=function(evt) { if(evt.persisted) disableBackButton() } 
+window.onunload=function() { void (0) } 
+
+
+      
+</script>
+<script language="JavaScript">
+
+
+    //edit by unwanted
+
+
+    var message = "Right-Click Disabled - Admin";
+
+    ///////////////////////////////////
+    function clickIE4() {
+        if (event.button == 2) {
+            alert(message);
+            return false;
+        }
+    }
+
+    function clickNS4(e) {
+        if (document.layers || document.getElementById && !document.all) {
+            if (e.which == 2 || e.which == 3) {
+                alert(message);
+                return false;
+            }
+        }
+    }
+
+    if (document.layers) {
+        document.captureEvents(Event.MOUSEDOWN);
+        document.onmousedown = clickNS4;
+    }
+    else if (document.all && !document.getElementById) {
+        document.onmousedown = clickIE4;
+    }
+
+    document.oncontextmenu = new Function("alert(message);return false")
+
+
+</script>
+
+ 
+    <link href="css/UpdateProgress.css" rel="stylesheet" type="text/css" /><link href="css/Tabs.css" rel="stylesheet" type="text/css" />
+    
+    
+     <style type="text/css">
+        .messagealert {
+            width: 100%;
+            position: fixed;
+             top:0px;
+            z-index: 100000;
+            padding: 0;
+            font-size: 15px;
+        }
+    </style>
+    
+   
+</head>
+
+<body style="background-color:#f7f0d5" onload="MM_preloadImages('images/feed_over.png');disableBackButton();">
+
+
+
+ <form name="aspnetForm" method="post" action="frm_menu.aspx" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_ToolkitScriptManager1_HiddenField" id="ctl00_ToolkitScriptManager1_HiddenField" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/aastreg/WebResource.axd?d=SBVOgVtGsF9kfOM07NF_2bVBMS_irYhvhEwxeKpfwRFs8NvyPxZRr5YgTgxz8j8QR_bha4X1iubD_Svmn6eYShsoHZU1&amp;t=638314045380000000" type="text/javascript"></script>
+
+
+<script src="/aastreg/ScriptResource.axd?d=NZDMSiiyw-BUuCmjo8HsFgBn2agynGRV48tpC4w5a5VjJMloUfFVPL4fiReyDozoC-SzobNOFMgzi0P2Y9eW5AHldQIRoe0laA2wK4cRLU1sOgaA0&amp;t=705c9838" type="text/javascript"></script>
+<script src="/aastreg/ScriptResource.axd?d=8S-xr8M6m07M575XHxnFswV8IUdKJidEaIrCH3NyuahuRhiBUhZbfc8NAeLbdmB21BCrHAtNhGdSHXuQhokabTHYOO2FCUOS6NbP9SYgbfLo8BUMEdBFacNczQQkxP2aa_Zkng2&amp;t=705c9838" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BD66CE72" />
+	<input type="hidden" name="__PREVIOUSPAGE" id="__PREVIOUSPAGE" value="" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="" />
+</div>
+ <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ToolkitScriptManager1', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls([], [], [], 90);
+//]]>
+</script>
+
+ <script type="text/javascript" language="javascript">
+     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+     function EndRequestHandler(sender, args) {
+         if (args.get_error() != undefined) {
+             args.set_errorHandled(true);
+         }
+     }
+</script>
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td background="images/header_ext.jpg">
+    <div id="header">
+      
+    
+
+   <div id="mainTop">
+<table width="98%" border="0" align="left" cellpadding="0" cellspacing="2" class="topTable">
+ <caption> <span id="ctl00_UC_Student1_lbl_semester" style="color:Blue;font-size:Medium;font-weight:bold;">For the First Semester 2026/2027</span>
+   <input type="hidden" name="ctl00$UC_Student1$hdn_dep_gpa" id="ctl00_UC_Student1_hdn_dep_gpa" value="" />
+    </caption>
+  <tbody>
+      <tr>
+      <th width="17%" > Registration number </th>
+      <td align="left" width="20%"><span id="ctl00_UC_Student1_lbl_regnum">REDACTED</span></td>
+      <th width="15%" align="right" > Name</th>
+      <td width="26%"> <span id="ctl00_UC_Student1_lbl_name">REDACTED</span></td>
+      <th width="7%" > Sponser</th>
+      <td width="15%"> <span id="ctl00_UC_Student1_lbl_sponser">REDACTED</span></td>
+    </tr>
+    <tr>
+      <th align="left"> College </th>
+      <td><span id="ctl00_UC_Student1_lbl_fac">REDACTED</span>
+                <br />
+                <input type="hidden" name="ctl00$UC_Student1$hdn_fac_code" id="ctl00_UC_Student1_hdn_fac_code" value="" /></td>
+      <th align="right"> Department</th>
+      <td><span id="ctl00_UC_Student1_lbl_dept">REDACTED</span>
+                <br />
+                <input type="hidden" name="ctl00$UC_Student1$hdn_dep_code" id="ctl00_UC_Student1_hdn_dep_code" value="" /></td>
+      <th> Study</th>
+      <td><span id="ctl00_UC_Student1_lbl_study">REDACTED</span>
+                <br />
+                <input type="hidden" name="ctl00$UC_Student1$hdn_study_code" id="ctl00_UC_Student1_hdn_study_code" value="" /></td>
+    </tr>
+    <tr>
+      <th align="left"> Period</th>
+      <td> <span id="ctl00_UC_Student1_lbl_period">REDACTED</span></td>
+      <th align="right"> Total achivement</th>
+      <td><span id="ctl00_UC_Student1_lbl_totalachive">REDACTED</span></td>
+      <th> GPA</th>
+      <td> <span id="ctl00_UC_Student1_lbl_GPA">REDACTED</span></td>
+    </tr>
+
+  </tbody>
+</table>
+  <input type="hidden" name="ctl00$UC_Student1$hdn_errmsg" id="ctl00_UC_Student1_hdn_errmsg" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_errcode" id="ctl00_UC_Student1_hdn_errcode" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_campcode" id="ctl00_UC_Student1_hdn_campcode" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_term" id="ctl00_UC_Student1_hdn_term" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_maxhrs" id="ctl00_UC_Student1_hdn_maxhrs" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_maximprhrs" id="ctl00_UC_Student1_hdn_maximprhrs" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_usertype" id="ctl00_UC_Student1_hdn_usertype" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_MBA" id="ctl00_UC_Student1_hdn_MBA" value="" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_InzarAr" id="ctl00_UC_Student1_hdn_InzarAr" />
+   <input type="hidden" name="ctl00$UC_Student1$hdn_InzarEg" id="ctl00_UC_Student1_hdn_InzarEg" />
+    <input type="hidden" name="ctl00$UC_Student1$hdn_minor" id="ctl00_UC_Student1_hdn_minor" value="" />
+    <input type="hidden" name="ctl00$UC_Student1$hdn_ableToReg" id="ctl00_UC_Student1_hdn_ableToReg" value="" />  
+    <input type="hidden" name="ctl00$UC_Student1$hdn_regStatus" id="ctl00_UC_Student1_hdn_regStatus" value="" /> 
+                
+</div>
+
+
+    </div>
+    </td>
+    </tr>
+    <tr>
+ <td align="left" valign="top" height="100%">
+
+
+  
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f1ecd4">
+        <tr>
+            <td>
+                <div id="buttons">
+                    <div class="buttons">
+                        <a id="ctl00_ContentPlaceHolder1_lbtn_choice" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$lbtn_choice','')"><img src="images/home1.png" alt=""/>Home</a>
+                        <!-- 1st button -->
+                        
+                        <a id="ctl00_ContentPlaceHolder1_LinkButton2" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$LinkButton2','')"><img src="images/exit.png" alt=""/> 
+                        Logout</a>
+                        <!-- 2nd button -->
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="feedback">
+        <ul id="navigationMenu">
+           
+            <li><a class="video" target="_blank" href="http://www.aast.edu/reg_media/reg-final.html">
+                <span>Video Tutorial</span> </a></li>
+    
+        </ul>
+    </div>
+    
+    <center>
+        <div id="menu">
+            <div id="primary">
+                <ul>
+                    <li>
+                        <a id="ctl00_ContentPlaceHolder1_Lbtn_Reg" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$Lbtn_Reg','')">Online Registration</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span id="ctl00_ContentPlaceHolder1_lbl_msg" style="color:#CC0000;font-weight:bold;"></span></li>
+                      
+                      
+                    <li>
+                        <a onclick="Getvalues();this.focus();" id="ctl00_ContentPlaceHolder1_lbtn_stdtrans" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$lbtn_stdtrans&quot;, &quot;&quot;, false, &quot;&quot;, &quot;../regreports/rep_StudentOnlineRegistrationTranscript.aspx&quot;, false, true))">Print 
+                        UnOfficial Transcript</a>
+                            
+                    </li>
+                    <li id="ctl00_ContentPlaceHolder1_li_cademic">
+                        <a onclick="StdGetvalues();this.focus();" id="ctl00_ContentPlaceHolder1_lbtn_guidtrans" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$lbtn_guidtrans&quot;, &quot;&quot;, false, &quot;&quot;, &quot;../regreports/rep_StudentUTranscript.aspx&quot;, false, true))">Print UnOfficial 
+                        Academic Guidance Transcript</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="secondary">
+                <ul>
+                    
+                    <li>
+                        <a id="ctl00_ContentPlaceHolder1_btn_Card" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$btn_Card','')">Print Guidance Card(Permanent)</a></li>
+                    <li>
+                        <a id="ctl00_ContentPlaceHolder1_btn_Schedule" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$btn_Schedule','')">Print 
+                        Schedule</a></li>
+                </ul>
+            </div>
+        </div>
+         <div id="order" class="orderText">
+            &nbsp;
+        </div>
+    </center>
+<div id="warningArea" style="display:none;height:auto;width:100%;text-align:center">
+<br /><br />
+            <h4 align="center" style="width:100%;text-align:center;height:100%"><font color="maroon">  
+            </font></h4>
+            <br />                        
+</div>
+    <script type="text/javascript">
+        var oldTarget, oldAction;
+        function Getvalues() {
+            if ('1004011977' > "0") {
+                document.getElementById('secode').value = "iDqhjyJIus95Km5Dj0jwtA%3d%3d";
+                document.getElementById('regnum').value = "WXuHSLfNJRTCrZixtlDdpg%3d%3d";
+                document.getElementById('db').value = "31";
+                document.getElementById('reshdn').value = "dBhjsErQbNVPFCxmEa2tkgK3ynVrwUgLFc6YIHmjAkvz9qHUTjC1smG7kA0sYBdVnuBjLvZ3wwiOloD6btSfcW8bDXU=";
+                var form = document.forms[0];
+                oldTarget = form.target;
+                oldAction = form.action;
+                form.target = "_blank";
+
+                window.setTimeout(
+         "document.forms[0].target=oldTarget;"
+         + "document.forms[0].action=oldAction;",
+         200
+      );
+
+            }
+        }
+        function StdGetvalues() {
+            if ('1004011977' > "0") {
+                document.getElementById('stdsecode').value = "iDqhjyJIus95Km5Dj0jwtA%3d%3d";
+                document.getElementById('stdregnum').value = "WXuHSLfNJRTCrZixtlDdpg%3d%3d";
+                document.getElementById('db').value = "31";
+                document.getElementById('reshdn').value = "dBhjsErQbNVPFCxmEa2tkgK3ynVrwUgLFc6YIHmjAkvz9qHUTjC1smG7kA0sYBdVnuBjLvZ3wwiOloD6btSfcW8bDXU=";
+                var form = document.forms[0];
+                oldTarget = form.target;
+                oldAction = form.action;
+                form.target = "_blank";
+
+                window.setTimeout(
+         "document.forms[0].target=oldTarget;"
+         + "document.forms[0].action=oldAction;",
+         200
+      );
+
+            }
+        }
+
+//        function openWin() {
+//            var oWnd = radopen("Terms.aspx", "RadWindow1");
+
+//           
+//        }
+
+//        function OnClientClose(oWnd, args) {
+//            //get the transferred arguments
+//            var arg = args.get_argument();
+//            if (arg) {
+
+
+//            }
+//            return arg;
+//           
+//        }
+
+
+    </script>
+
+ 
+ 
+    </td>
+  </tr>
+  <tr>
+  <td>
+  <div id="footer">Copyright © 2012 IDC-Arab Academy for Science, Technology &amp; 
+      Maritime Transport me Transport </div>
+  </td>
+  </tr>
+</table>
+
+       
+       
+
+
+     <input id="secode"  name="secode"  type="hidden"/>
+    <input id="regnum" name="regnum" type="hidden" />
+    <input id="db" name="db" type="hidden" />
+    <input id="reshdn" name="reshdn" type="hidden" />
+    
+    <input id="stdsecode"  name="stdsecode"  type="hidden"/>
+    <input id="stdregnum" name="stdregnum" type="hidden" />
+
+
+<input id="syscode"  name="syscode"  type="hidden"/>
+    <input id="taskid" name="taskid" type="hidden" />
+    <input id="user" name="user" type="hidden" />
+ 
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("ctl00_ToolkitScriptManager1_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();Sys.Application.initialize();
+//]]>
+</script>
+</form>
+ 
+
+ </body>
+ 
+
+
+
+ 
+</html>

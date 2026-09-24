@@ -1,0 +1,4 @@
+node_modules/
+dist/
+# raw (unsanitized) portal saves never go in the repo; only tools/sanitize-portal-page.py output does
+tests/fixtures/portal/raw/

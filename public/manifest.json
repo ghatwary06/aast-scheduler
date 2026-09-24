@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "AAST Schedule Planner",
+  "version": "0.1.0",
+  "description": "Finds clash-free AASTMT timetables that fit your rules. Never changes your registration.",
+  "action": { "default_popup": "popup/popup.html", "default_title": "AAST Schedule Planner" },
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://generativelanguage.googleapis.com/*"]
+}
