@@ -4,6 +4,7 @@ import { groupIdFromLabel } from './registered';
 
 export interface GroupPageItem {
   group: string;
+  label: string;
   classLetter: string;
   lecturers: string;
   entries: GridEntry[];
@@ -44,6 +45,7 @@ export function parseGroupPage(doc: Document): GroupPage {
     }
     return {
       group: groupIdFromLabel(grp.textContent ?? ''),
+      label: clean(grp.textContent),
       classLetter: clean(doc.getElementById(`${prefix}_lbl_class`)?.textContent),
       lecturers: clean(doc.getElementById(`${prefix}_lbl_lecturer`)?.textContent),
       entries,

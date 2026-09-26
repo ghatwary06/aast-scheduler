@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "build": "vite build",
+    "build": "vite build && node tools/build-content.mjs",
     "preview": "vite preview --port 4173",
     "screenshots": "node tools/screenshots.mjs"
   },

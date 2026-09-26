@@ -11,7 +11,8 @@ describe('groupIdFromLabel', () => {
     expect(groupIdFromLabel('T3 Class J')).toBe('J');
     expect(groupIdFromLabel(' T3 Extra ')).toBe('Extra');
     expect(groupIdFromLabel('T3 Class M NH')).toBe('M NH');
-    expect(() => groupIdFromLabel('Group J')).toThrow(PortalParseError);
+    expect(groupIdFromLabel('Share')).toBe('Share');
+    expect(() => groupIdFromLabel('   ')).toThrow(PortalParseError);
   });
 });
 

@@ -61,6 +61,8 @@ export async function mountApp(root: HTMLElement, store: Store = defaultStore(),
     message: '',
     busy: false,
   };
+  const readerWarnings = (await store.get<string[]>('readerWarnings')) ?? [];
+  if (readerWarnings.length) state.message = `Portal read warnings:\n${readerWarnings.join('\n')}`;
 
   async function loadDataset(ds: Dataset) {
     state.previous = state.dataset;

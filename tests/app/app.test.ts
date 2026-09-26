@@ -61,6 +61,13 @@ describe('app', () => {
     expect(text(root)).toContain('closest');
   });
 
+  test('shows warnings from the last portal read', async () => {
+    const root = document.createElement('div');
+    await mountApp(root, memoryStore({ readerWarnings: ['Networks: dropdown option "X" has no ? page'] }));
+    expect(text(root)).toContain('Portal read warnings');
+    expect(text(root)).toContain('dropdown option "X" has no ? page');
+  });
+
   test('an invalid import shows the errors and keeps the old data', async () => {
     const root = document.createElement('div');
     const app = await mountApp(root, memoryStore());

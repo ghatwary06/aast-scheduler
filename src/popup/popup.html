@@ -8,11 +8,16 @@
       h1 { font-size: 15px; margin: 0 0 8px; }
       button { width: 100%; padding: 8px; border: 0; border-radius: 6px; background: #2b5d8a; color: #fff; font: inherit; cursor: pointer; }
       p { color: #5d6474; margin: 8px 0 0; }
+      #read { margin-top: 8px; background: #1a7f37; }
+      pre { white-space: pre-wrap; font: 12px/1.4 inherit; margin: 8px 0 0; }
+      pre.error { color: #b3261e; } pre.done { color: #1a7f37; }
     </style>
   </head>
   <body>
     <h1>AAST Schedule Planner</h1>
     <button id="open">Open planner</button>
+    <button id="read" hidden>Read this page's groups</button>
+    <pre id="status"></pre>
     <p id="portal"></p>
     <script type="module" src="./popup.ts"></script>
   </body>

@@ -8,8 +8,8 @@ export interface RegisteredCourse {
 }
 
 export function groupIdFromLabel(label: string): string {
-  const m = clean(label).match(/^T\d+\s+(?:Class\s+)?(.+)$/);
-  if (!m) throw new PortalParseError(`unrecognised group label "${label}"`);
+  const m = clean(label).match(/^(?:T\d+\s+)?(?:Class\s+)?(.*)$/);
+  if (!m || !m[1]) throw new PortalParseError(`unrecognised group label "${label}"`);
   return m[1];
 }
 

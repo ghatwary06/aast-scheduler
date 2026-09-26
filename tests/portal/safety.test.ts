@@ -166,6 +166,7 @@ describe('layer 4: no code can write to a dropdown', () => {
     };
     walk(join(process.cwd(), 'src', 'core'));
     walk(join(process.cwd(), 'src', 'portal'));
+    walk(join(process.cwd(), 'src', 'content'));
     expect(files.length).toBeGreaterThan(5);
     for (const src of files) {
       expect(src).not.toMatch(/\.value\s*=[^=]/);
