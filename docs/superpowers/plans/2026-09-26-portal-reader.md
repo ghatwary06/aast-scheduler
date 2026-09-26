@@ -822,3 +822,16 @@ Expected:
   - `ChangeCourse`, `DropdownOption`
   - `PortalRequest`, `FetchText`, `HttpText`, `ReadResult`
   - `GroupPageItem.label`
+
+---
+
+## Fix 1 (2026-09-26, after the first live run)
+
+**What happened:** the live read got through all 16 Linear Algebra groups, then stopped safely on a Digital Logic ? page with `unknown day row "CCS2102 Sec."`. On that page, a day's classes are stacked in one slot: the day cell spans two rows, so the second row has no day name.
+
+**Changes:**
+- **`parseScheduleTable` now follows the HTML rowspan/colspan table rules.** Columns are 0 = day, 1 = spacer, 2..17 = periods. A continuation row inherits the day from the spanning day cell. Any row that doesn't cover exactly 18 columns still throws.
+- **`parseGroupPage` returns `skipped: { label, classLetter, reason }[]`.** A group whose timetable can't be read is left out instead of failing the page.
+- **`readPortal` turns each skipped group into a warning**, which is shown in the planner. Safety stops (wrong course, logged out, refused request) still abort the whole read.
+
+**Tests added:** stacked-slot rows, a no-day row refused, a skipped group on a page, and a read that continues past a broken group.

@@ -12,7 +12,7 @@ const PAGE = 'https://alexreg.aast.edu/aastreg/frm_Register.aspx';
 const TEMPLATE = readFileSync(join(process.cwd(), 'tests/fixtures/portal/group-page-1.html'), 'utf8');
 
 /** A fake portal: the ? POST selects a course; ?pg=N serves one group page per open group, plus the current group if full, plus a full "Z". */
-function fakePortal(courses: ChangeCourse[], opts: { wrongCourse?: boolean; loggedOut?: boolean } = {}) {
+function fakePortal(courses: ChangeCourse[], opts: { wrongCourse?: boolean; loggedOut?: boolean; brokenZ?: boolean } = {}) {
   const groupsFor = new Map(
     courses.map((c) => [
       c.code,
@@ -42,7 +42,7 @@ function fakePortal(courses: ChangeCourse[], opts: { wrongCourse?: boolean; logg
       .replace(/(_lbl_grp">)[^<]*/, `$1T3 Class ${g.group} `)
       .replace(/(_lbl_class">)[^<]*/, `$1${g.cls} `)
       .replace(/<a href="frm_CourseClassReg\.aspx\?pg=(\d+)">\d+<\/a>/g, (m, n) => (Number(n) <= gs.length ? m : ''));
-    return { ok: true, status: 200, url, text: html };
+    return { ok: true, status: 200, url, text: opts.brokenZ && g.group === 'Z' ? html.replace(/(<th><span>\s*)Saturday/, '$1Funday') : html };
   };
   return { fetchText, requests, groupsFor };
 }
@@ -98,6 +98,15 @@ describe('readPortal', () => {
     const portal = fakePortal(courses, { wrongCourse: true });
     await expect(readPortal(doc, PAGE, portal.fetchText, { delayMs: 0 })).rejects.toThrow(/stopped to be safe/);
     expect(portal.requests.filter((r) => r.method === 'POST')).toHaveLength(1);
+  });
+
+  test('a group whose timetable cannot be read is skipped with a warning; the read continues', async () => {
+    const portal = fakePortal(courses, { brokenZ: true });
+    const { dataset, warnings } = await readPortal(doc, PAGE, portal.fetchText, { delayMs: 0 });
+    expect(validateDataset(dataset).ok).toBe(true);
+    expect(dataset.courses.every((c) => !c.groups.some((g) => g.id === 'Z'))).toBe(true);
+    expect(warnings).toHaveLength(6);
+    expect(warnings[0]).toMatch(/skipped T3 Class Z -Z .*unknown day row "Funday"/);
   });
 
   test('stops when logged out', async () => {

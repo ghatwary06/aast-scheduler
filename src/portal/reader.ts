@@ -72,6 +72,7 @@ export async function readPortal(
       }
       pageCount = page.pageCount;
       items.push(...page.items);
+      for (const k of page.skipped) warnings.push(`${course.name}: skipped ${k.label} -${k.classLetter} (group page ${pg}) because its timetable couldn't be read: ${k.reason}`);
       progress(`${course.name}: group ${pg} of ${pageCount}`);
     }
 

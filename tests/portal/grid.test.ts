@@ -37,6 +37,30 @@ describe('parseScheduleTable', () => {
     expect(entries.map(fmt).sort()).toEqual(['Sat 3-4 EBA2204 Sec', 'Sun 1-2 EBA2204 Lec']);
   });
 
+  test('reads two classes stacked in one slot (a day spanning two rows)', () => {
+    const head = `<tr><th></th><th></th>${Array.from({ length: 16 }, (_, i) => `<th>${i + 1}</th>`).join('')}</tr>`;
+    const doc = new DOMParser().parseFromString(
+      `<table>${head}
+        <tr><th rowspan="2">Saturday</th><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td>
+          <td colspan="2"><span id="a_lbSelect">CCS2102<br>Lec.<br>Staff</span></td>
+          <td colspan="2" rowspan="2"><span id="b_lbSelect">CCS2102<br>Lab.<br>Staff</span></td>${'<td rowspan="2"></td>'.repeat(10)}</tr>
+        <tr><td colspan="2"><span id="c_lbSelect">CCS2102<br>Sec.</span></td></tr>
+        <tr><th>Sunday</th><td></td>${'<td></td>'.repeat(16)}</tr>
+      </table>`,
+      'text/html',
+    );
+    expect(parseScheduleTable(doc.querySelector('table')).map(fmt).sort()).toEqual(['Sat 3-4 CCS2102 Lec', 'Sat 3-4 CCS2102 Sec', 'Sat 5-6 CCS2102 Lab']);
+  });
+
+  test('a row without a day (and no spanning day cell above) is refused', () => {
+    const head = `<tr><th></th><th></th>${Array.from({ length: 16 }, (_, i) => `<th>${i + 1}</th>`).join('')}</tr>`;
+    const doc = new DOMParser().parseFromString(
+      `<table>${head}<tr><th>Saturday</th>${'<td></td>'.repeat(17)}</tr><tr><td colspan="2"><span id="c_lbSelect">CCS2102<br>Sec.</span></td></tr></table>`,
+      'text/html',
+    );
+    expect(() => parseScheduleTable(doc.querySelector('table'))).toThrow(/has no day/);
+  });
+
   test('throws on a missing table or a changed layout', () => {
     expect(() => parseScheduleTable(null)).toThrow(PortalParseError);
     const doc = loadFixture('group-page-2.html');

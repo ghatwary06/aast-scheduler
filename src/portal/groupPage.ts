@@ -16,6 +16,8 @@ export interface GroupPage {
   page: number;
   pageCount: number;
   items: GroupPageItem[];
+  /** groups on this page whose timetable couldn't be read; left out, with the reason */
+  skipped: { label: string; classLetter: string; reason: string }[];
 }
 
 const PAGE_LINK = /frm_CourseClassReg\.aspx\?pg=(\d+)$/i;
@@ -37,20 +39,23 @@ export function parseGroupPage(doc: Document): GroupPage {
     .filter(Number.isInteger);
   const pageCount = Math.max(page, ...linked);
 
-  const items = Array.from(doc.querySelectorAll('span[id$="_lbl_grp"]')).map((grp) => {
+  const items: GroupPageItem[] = [];
+  const skipped: GroupPage['skipped'] = [];
+  for (const grp of Array.from(doc.querySelectorAll('span[id$="_lbl_grp"]'))) {
     const prefix = grp.id.slice(0, -'_lbl_grp'.length);
-    const entries = parseScheduleTable(doc.querySelector(`[id="${prefix}_Schedule1"] table`));
-    for (const e of entries) {
-      if (e.courseCode !== courseCode) throw new PortalParseError(`group page for ${courseCode} lists ${e.courseCode}`);
+    const label = clean(grp.textContent);
+    const classLetter = clean(doc.getElementById(`${prefix}_lbl_class`)?.textContent);
+    try {
+      const entries = parseScheduleTable(doc.querySelector(`[id="${prefix}_Schedule1"] table`));
+      for (const e of entries) {
+        if (e.courseCode !== courseCode) throw new PortalParseError(`its timetable lists ${e.courseCode}, not ${courseCode}`);
+      }
+      items.push({ group: groupIdFromLabel(label), label, classLetter, lecturers: clean(doc.getElementById(`${prefix}_lbl_lecturer`)?.textContent), entries });
+    } catch (e) {
+      if (!(e instanceof PortalParseError)) throw e;
+      skipped.push({ label, classLetter, reason: e.message });
     }
-    return {
-      group: groupIdFromLabel(grp.textContent ?? ''),
-      label: clean(grp.textContent),
-      classLetter: clean(doc.getElementById(`${prefix}_lbl_class`)?.textContent),
-      lecturers: clean(doc.getElementById(`${prefix}_lbl_lecturer`)?.textContent),
-      entries,
-    };
-  });
-  if (items.length === 0) throw new PortalParseError('group page has no groups');
-  return { courseCode, courseName, page, pageCount, items };
+  }
+  if (items.length === 0 && skipped.length === 0) throw new PortalParseError('group page has no groups');
+  return { courseCode, courseName, page, pageCount, items, skipped };
 }

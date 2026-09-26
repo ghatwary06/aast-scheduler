@@ -61,6 +61,14 @@ describe('parseGroupPage', () => {
     expect(p.items[0].entries.map((e) => `${e.day} ${e.from}-${e.to} ${e.type}`).sort()).toEqual(['Sat 3-4 Sec', 'Sun 1-2 Lec']);
   });
 
+  test('a group whose timetable cannot be read is skipped with a reason, not fatal', () => {
+    const doc = loadFixture('group-page-2.html');
+    doc.querySelector('[id$="_Schedule1"] table tr:nth-child(2) td')!.remove();
+    const p = parseGroupPage(doc);
+    expect(p.items).toHaveLength(0);
+    expect(p.skipped).toEqual([{ label: 'T3 Class B', classLetter: 'L', reason: expect.stringMatching(/Saturday row has 15 columns/) }]);
+  });
+
   test('throws on a page that is not a ? page', () => {
     expect(() => parseGroupPage(loadFixture('register-registered.html'))).toThrow(PortalParseError);
   });
