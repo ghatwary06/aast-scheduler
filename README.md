@@ -16,6 +16,15 @@ This extension does it exhaustively and instantly. It tells you which groups to 
 
 ## Features
 
+### Live import from the registration portal
+
+Open **Change Registered Courses**, click the extension, and press **Read this page's groups**. In about a minute it reads, for every course:
+- every group's lectures, sections and labs
+- which groups are **open** and which are **full**
+- which group you're in now
+
+It reads by sending the same requests the portal's **?** buttons send, in the background. Nothing on the page is clicked or changed.
+
 ### Rules you control
 
 Each rule can be a **must** (a hard filter), a **prefer** (ranked, top of the list matters most) or **off**:
@@ -74,18 +83,21 @@ The Data tab shows each course's groups side by side, with full groups greyed ou
 
 ## It never touches your registration
 
-The planner only **reads** timetables. Nothing in it can click **Confirm Registration**, **Select**, **Delete**, **Add**, **Insert** or **Logout**, or change a dropdown. The code that talks to the portal enforces this in layers, and every layer is tested:
+The planner only **reads** timetables. Nothing in it can send **Confirm Registration**, **Select**, **Delete**, **Add**, **Insert** or **Logout**, or change a dropdown. That's enforced in layers, and every layer is tested:
 
-1. **A page-aware allowlist.** The portal reuses the same button id for "Back" on one page and "Logout" on another, so every decision checks which page it's on.
-2. **A denylist that always wins,** even if a control is on the allowlist.
-3. **A form-submit and postback blocker** that runs while reading.
-4. **A source scan** that fails the build if portal-facing code ever writes to a form field.
+1. **Requests, not clicks.** The reader never clicks anything. Every request it makes must pass an allowlist: group pages (`?pg=N`), or one POST that presses exactly one **?** button, with no postback target. Anything else is refused before it leaves the browser. The 🗑 button that sits right next to each ? is refused by name.
+2. **A denylist that always wins.** Confirm, Delete, Add, Insert, Logout and dropdown postbacks are rejected even if something slipped past the allowlist.
+3. **A form-submit and postback blocker** runs inside the portal page while reading, so not even an accidental click can submit the form.
+4. **A source scan** fails the build if portal-facing code ever writes to a form field.
+5. **Minimal permissions.** The extension only gets access to the portal tab when you open its popup there (`activeTab`), and it has no standing access to the site.
+
+If the portal shows something unexpected (a different course than asked, a logout, a layout it can't read), the reader stops or skips that group with a warning. It never guesses.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    A[Portal pages] -->|exact HTML parsing| D[(Timetable data)]
+    A[Portal: ? requests + group pages] -->|exact HTML parsing| D[(Timetable data)]
     B[Imported JSON / example] --> D
     D --> S[Solver]
     R[Your rules] --> S
@@ -116,7 +128,7 @@ Or preview it without installing: `npm run build && npm run preview`, then open 
 ## Development
 
 ```bash
-npm test             # 86 tests: solver, rules, portal parsers, safety guard, UI
+npm test             # 123 tests: solver, rules, portal parsers, safety guard, UI
 npm run typecheck
 npm run screenshots  # regenerate docs/screenshots (needs `npm run preview` running)
 ```
@@ -131,7 +143,6 @@ npm run screenshots  # regenerate docs/screenshots (needs `npm run preview` runn
 
 ## Roadmap
 
-- **Live import:** read groups and open seats straight from the registration portal. The parsers and safety guard are already in place.
 - **PDF import:** read the schedule PDFs AASTMT publishes before registration opens.
 
 ## Credits
