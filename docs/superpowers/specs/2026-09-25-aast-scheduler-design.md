@@ -1,7 +1,7 @@
 # AASTMT Schedule Planner: Design Spec
 
 **Date:** 2026-09-25
-**Status:** Draft, awaiting review
+**Status:** Implemented (Plans 1–4). Live portal read verified on 2026-09-26. Sections 6 and 13 were updated after building.
 **Form:** Brave/Chrome browser extension (Manifest V3); everything runs inside the extension
 
 ## 1. Purpose
@@ -93,18 +93,23 @@ The student does steps 1–4 **by hand in their own Brave**. The extension is us
 
 The solver is a pure module so it can be unit-tested without a browser. A future PDF reader only has to produce the same dataset format.
 
-## 6. Reading flow
+## 6. Reading flow (as built: requests, not clicks)
 
-1. The student opens the popup while on `frm_Register.aspx`. On any other page the popup offers only "Open app".
-2. Install the submit blocker (§2, layer 3).
-3. If on the registered view, record the **current groups** from the course table, then activate **Change Registered Courses** (allowlisted).
-4. In the change view, for each course row:
-   - Read the Class dropdown's `<option>` list. **Open groups are the selectable options.** How full groups appear (missing vs. `disabled`) is confirmed in build step 1.
-   - Activate its **?** icon, read page 1, then activate page links 2..N. Read each page's group name and sessions.
-   - Activate **Back**.
-5. Remove the submit blocker, save the dataset, and open the app page.
+The first design had the reader clicking ?, the page numbers and Back. When the real change page was captured, it turned out the 🗑 delete icon is structurally identical to the ? icon, apart from its name. So the reader was changed to **never click anything** (Plan 4):
 
-Progress is reported to the popup (e.g. "Networks: group 7 of 12"). Pages are read with a short delay between them to be gentle on the portal. The student must not use that tab while a read runs (about a minute).
+1. The student opens **Change Registered Courses** themselves, then the popup's **Read this page's groups**. On any other page the reader refuses to start.
+2. The popup injects the submit blocker (§2, layer 3) into the page's JS world, then the reader (content script).
+3. The reader reads the change view:
+   - the course table gives the **current group**
+   - each Class dropdown gives the **open groups**
+   - each row gives its ? button's exact name
+4. For each course:
+   - it sends, in the background, the exact POST the ? icon would send: the form's own fields, plus `<name>.x/.y`, with no postback target
+   - it then GETs `frm_CourseClassReg.aspx?pg=1..N`
+   - every request must pass `checkPortalRequest` (`src/portal/requests.ts`), or it is refused before leaving the browser
+5. It saves the dataset. The blocker removes itself, and the popup offers **Open planner**.
+
+The visible page never changes. Progress is shown in the popup (e.g. "Networks: group 7 of 12"), with a short delay between requests. **Aborts:** the wrong page, logged out, a ? page showing a different course, or a refused request. **Warnings instead of aborts:** a group whose timetable can't be read is skipped, and a dropdown option with no ? page is noted.
 
 ## 7. Data format
 
@@ -220,12 +225,16 @@ Progress is reported to the popup (e.g. "Networks: group 7 of 12"). Pages are re
 - **Gemini parser.** Uses mocked responses, including invalid ones that must be rejected. No real API calls in tests.
 - **Live check.** One supervised read on the real portal. The student compares several groups against the ? pages and confirms that Confirm Registration was never touched and the registration is unchanged.
 
-## 13. Open questions (answered in build step 1, on the real portal)
+## 13. Portal questions (answered on the real portal, 2026-09-26)
 
-1. How full groups appear in the Class dropdown: missing, or present but `disabled`.
-2. Whether the ? icon is a normal link or an ASP.NET postback, and whether page links are plain `?pg=N` URLs or postbacks.
-3. The exact label mapping between the dropdown (`T3 Class A -I -Alexandria`) and the ? page (`T3 Class A - I`). Some groups differ in their Group and Class letters (e.g. OOP group J shown with class D).
-4. Whether the ? pages show only open groups, or all groups.
+1. **Full groups are missing from the Class dropdown**, not disabled. So open = listed, excluding `-99` "Any". When your own group is full, the dropdown shows a different option as selected, so the current group is read from the course table.
+2. **The ? icon is an `<input type="image">` that submits the form.** Page links are plain `?pg=N` GETs. The server remembers which course is selected, which is why each course needs its ? POST before its page GETs.
+3. **Labels:**
+   - dropdown: `<group> -<class> -<campus>`, e.g. `T3 Class B -L -Alexandria`, `T3 Class O Extra-Y -Alexandria`, `Share -I -Alexandria`
+   - ? page: `lbl_grp` = `T3 Class B`, `lbl_class` = `L`
+   - Groups are matched by (group, class).
+4. **The ? pages list every group, open and full** (e.g. 16 for Linear Algebra versus 11 in the dropdown).
+5. **Timetables can stack two classes in one slot:** the day cell spans several rows. The parser follows the HTML rowspan/colspan rules.
 
 ## 14. Tech
 

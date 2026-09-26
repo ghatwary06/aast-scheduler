@@ -10,7 +10,7 @@ A Brave/Chrome extension for AASTMT students. You tell it what you want ("Friday
 
 ## Why
 
-Registration at AASTMT means picking one **group** per course, and each group comes with its own lecture, section and lab times. With 6 courses and 4–16 groups each, that's tens of thousands of combinations. When a single section changes time, the portal can reshuffle you into groups you never chose. Finding a good replacement by hand means screenshotting every group and checking clashes one by one, which takes hours.
+Registration at AASTMT means picking one **group** per course, and each group comes with its own lecture, section and lab times. With 6 courses and up to 16 groups each, that's over 150,000 combinations, and that's only counting the groups that still have seats. When a single section changes time, the portal can reshuffle you into groups you never chose. Finding a good replacement by hand means screenshotting every group and checking clashes one by one, which takes hours.
 
 This extension does it exhaustively and instantly. It tells you which groups to pick, and it shows the closest alternatives when your wishes are impossible.
 
@@ -55,7 +55,7 @@ Every result is a full timetable, with:
 - how many groups you'd change
 - **the exact dropdown names to pick in the portal**
 
-Groups with identical times are merged ("Database G *or* H"), so every result comes with a backup group.
+Groups with identical times are merged ("Database G *or* H"), which gives you a backup if one fills up.
 
 ![A result card](docs/screenshots/card.png)
 
@@ -106,9 +106,9 @@ flowchart LR
     V --> P[PDF / share mode]
 ```
 
-- **The solver** is a backtracking search over one group per course. It uses bitmask clash checks and prunes early on hard rules. Results are ranked lexicographically by your preference order, with no weights to tune. Searching every combination takes well under a second.
-- **The portal parsers** read the timetable straight from the page's HTML, using each cell's position and `colspan`. They never read pixels or screenshots, so there's no guessing. They were tested against real portal pages, with all personal data removed by `tools/sanitize-portal-page.py`.
-- **There's no framework and no server:** vanilla TypeScript, bundled by Vite into a ~30 KB Manifest V3 extension.
+- **The solver** is a backtracking search over one group per course. It uses bitmask clash checks and prunes early on hard rules. Results are ranked lexicographically by your preference order, with no weights to tune. On real portal data (155,000+ combinations), a full search takes about 10 ms.
+- **The portal parsers** read the timetable straight from the page's HTML, following the table's `colspan`/`rowspan` layout, so even classes stacked in one slot are read correctly. They never read pixels or screenshots, so there's no guessing. They were tested against real portal pages, with all personal data removed by `tools/sanitize-portal-page.py`.
+- **There's no framework and no server:** vanilla TypeScript, bundled by Vite into a Manifest V3 extension under 50 KB.
 
 ## Try it
 
@@ -122,13 +122,14 @@ npm run build
 1. Open `brave://extensions` (or `chrome://extensions`) and turn on **Developer mode**.
 2. Click **Load unpacked** and select the `dist/` folder.
 3. Click the extension icon, then **Open planner**, then **Load example**. The example is real Fall 2026 group times for 6 computer-science courses.
+4. **With your own data:** log into the registration portal and press **Change Registered Courses**. Then click the extension icon and **Read this page's groups**. When it's done, **Open planner**.
 
 Or preview it without installing: `npm run build && npm run preview`, then open <http://localhost:4173/app/app.html?demo>.
 
 ## Development
 
 ```bash
-npm test             # 123 tests: solver, rules, portal parsers, safety guard, UI
+npm test             # solver, rules, portal parsers, safety guard, reader, UI
 npm run typecheck
 npm run screenshots  # regenerate docs/screenshots (needs `npm run preview` running)
 ```
@@ -136,10 +137,12 @@ npm run screenshots  # regenerate docs/screenshots (needs `npm run preview` runn
 | Folder | What's in it |
 |---|---|
 | `src/core/` | data format, rule evaluation, solver (no DOM) |
-| `src/portal/` | portal page parsers and the safety guard |
+| `src/portal/` | portal page parsers, the request guard, the reader, and the safety guard |
+| `src/content/` | the two scripts injected into the portal tab (reader + submit blocker) |
 | `src/app/`, `src/popup/` | the extension's pages |
 | `tests/` | Vitest + jsdom; fixtures are sanitized real portal pages |
 | `docs/superpowers/` | the design spec and step-by-step build plans |
+| `tools/` | fixture sanitizer, screenshot script, content-script build |
 
 ## Roadmap
 

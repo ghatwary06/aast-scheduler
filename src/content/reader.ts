@@ -1,7 +1,7 @@
 import { readPortal } from '../portal/reader';
 
 async function run(): Promise<void> {
-  const status = (s: { state: string; message: string; warnings?: string[] }) => chrome.storage.local.set({ readerStatus: s });
+  const status = (s: { state: string; message: string; warnings?: string[] }) => chrome.storage.local.set({ readerStatus: { ...s, at: Date.now() } });
   try {
     await status({ state: 'running', message: 'Starting…' });
     const { dataset, warnings } = await readPortal(

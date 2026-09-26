@@ -1,8 +1,17 @@
 {
   "name": "aast-scheduler",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Brave/Chrome extension that finds clash-free AASTMT timetables matching your rules. Never changes your registration.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghatwary06/aast-scheduler.git"
+  },
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",

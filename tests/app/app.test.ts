@@ -68,6 +68,15 @@ describe('app', () => {
     expect(text(root)).toContain('dropdown option "X" has no ? page');
   });
 
+  test('loading other data clears old portal-read warnings', async () => {
+    const store = memoryStore({ readerWarnings: ['old warning'] });
+    const root = document.createElement('div');
+    const app = await mountApp(root, store);
+    await app.loadDataset(sample());
+    expect(text(root)).not.toContain('old warning');
+    expect(await store.get('readerWarnings')).toEqual([]);
+  });
+
   test('an invalid import shows the errors and keeps the old data', async () => {
     const root = document.createElement('div');
     const app = await mountApp(root, memoryStore());

@@ -106,6 +106,27 @@ function search(courses: CourseUnits[], prune: (used: Set<Day>) => boolean, onLe
   rec(0);
 }
 
+/**
+ * Keeps only the best `k` items seen so far (by `cmp`) while counting everything. Live portal data
+ * has millions of combinations, so storing every candidate would run out of memory.
+ */
+function topK<T>(k: number, cmp: (a: T, b: T) => number) {
+  let items: T[] = [];
+  let count = 0;
+  return {
+    add(x: T) {
+      count++;
+      items.push(x);
+      if (items.length >= k * 4 + 256) {
+        items.sort(cmp);
+        items = items.slice(0, k);
+      }
+    },
+    result: () => items.sort(cmp).slice(0, k),
+    count: () => count,
+  };
+}
+
 function compareCosts(a: number[], b: number[]): number {
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] - b[i];
   return 0;
@@ -143,24 +164,20 @@ export function solve(ds: Dataset, rules: Rule[], opts: SolveOptions = {}): Solv
 
   // Strict pass: every must rule enforced.
   const strict = buildUnits(ds, must, excluded);
-  const solutions: Solution[] = [];
+  const best = topK<Solution>(limit, byPrefer);
   search(
     strict,
     (used) => dayRules.some((r) => DAYS.length - used.size < r.minOff || r.mustOff.some((d) => used.has(d))),
     (chosen) => {
       const s = toSolution(strict, chosen);
-      if (s.mustBroken.length === 0) solutions.push(s);
+      if (s.mustBroken.length === 0) best.add(s);
     },
   );
-  if (solutions.length > 0) {
-    solutions.sort(byPrefer);
-    return { total: solutions.length, solutions: solutions.slice(0, limit), nearMisses: [] };
-  }
+  if (best.count() > 0) return { total: best.count(), solutions: best.result(), nearMisses: [] };
 
   // Relaxed pass: only clashes and full groups are hard; rank by how little the must rules are broken.
   const relaxed = buildUnits(ds, [], excluded);
-  const all: Solution[] = [];
-  search(relaxed, () => false, (chosen) => all.push(toSolution(relaxed, chosen)));
-  all.sort((a, b) => a.mustBroken.length - b.mustBroken.length || a.mustCost - b.mustCost || byPrefer(a, b));
-  return { total: 0, solutions: [], nearMisses: all.slice(0, nearMissLimit) };
+  const closest = topK<Solution>(nearMissLimit, (a, b) => a.mustBroken.length - b.mustBroken.length || a.mustCost - b.mustCost || byPrefer(a, b));
+  search(relaxed, () => false, (chosen) => closest.add(toSolution(relaxed, chosen)));
+  return { total: 0, solutions: [], nearMisses: closest.result() };
 }

@@ -70,6 +70,7 @@ export async function mountApp(root: HTMLElement, store: Store = defaultStore(),
     state.excluded = {};
     state.rules = state.rules.filter((r) => validateRules([r], ds).ok);
     state.message = '';
+    await store.set('readerWarnings', []); // warnings belong to the read that produced them
     await store.set('previousDataset', state.previous);
     await store.set('dataset', ds);
     await store.set('excluded', {});
